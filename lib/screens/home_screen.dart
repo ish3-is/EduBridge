@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'courses_screen.dart';
 import 'community_screen.dart';
 import 'profile_screen.dart';
-
+import 'course_details_screen.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -162,9 +162,9 @@ class HomeBody extends StatelessWidget {
               children: [
                 const Text("كورسات مقترحة لك", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 15),
-                _buildCourseCard("أساسيات Flutter", "محمد علي", Colors.blueAccent),
-                _buildCourseCard("تطوير الويب الشامل", "سارة خالد", Colors.orangeAccent),
-                _buildCourseCard("الذكاء الاصطناعي", "فهد العمر", Colors.teal),
+               _buildCourseCard(context, "أساسيات Flutter", "محمد علي", Colors.blueAccent),
+                _buildCourseCard(context, "تطوير الويب الشامل", "سارة خالد", Colors.orangeAccent),
+                _buildCourseCard(context, "الذكاء الاصطناعي", "فهد العمر", Colors.teal),
               ],
             ),
           ),
@@ -193,40 +193,51 @@ class HomeBody extends StatelessWidget {
     );
   }
 
-  Widget _buildCourseCard(String title, String instructor, Color color) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(10),
+ Widget _buildCourseCard(BuildContext context, String title, String instructor, Color color) {
+    return GestureDetector( // هذا يخلي البطاقة قابلة للضغط
+      onTap: () {
+        // الانتقال لصفحة التفاصيل
+        Navigator.push(
+          context, // لاحظ: لازم نكون داخل كلاس State عشان نستخدم context، إذا طلع خطأ، شوف الملاحظة تحت
+          MaterialPageRoute(
+            builder: (context) => CourseDetailsScreen(courseTitle: title),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(Icons.play_circle_fill, color: color, size: 30),
             ),
-            child: Icon(Icons.play_circle_fill, color: color, size: 30),
-          ),
-          const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 5),
-              Text("المدرس: $instructor", style: const TextStyle(color: Colors.grey, fontSize: 12)),
-            ],
-          ),
-          const Spacer(),
-          const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
-        ],
+            const SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const SizedBox(height: 5),
+                Text("المدرس: $instructor", style: const TextStyle(color: Colors.grey, fontSize: 12)),
+              ],
+            ),
+            const Spacer(),
+            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }
