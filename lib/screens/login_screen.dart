@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'home_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -117,8 +117,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        // هنا نكتب كود الدخول لاحقاً
-                      },
+  // انتقال للشاشة الرئيسية وحذف الشاشات السابقة من الذاكرة
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => const HomeScreen()),
+    (route) => false,
+  );
+},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF6A11CB),
                         shape: RoundedRectangleBorder(
