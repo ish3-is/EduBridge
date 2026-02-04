@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_screen.dart'; // تأكدنا من استدعاء ملف الدخول هنا
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -8,11 +9,11 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  // للتحكم في الصفحات ومعرفة الصفحة الحالية
+  // للتحكم في الصفحات
   final PageController _controller = PageController();
   int _currentPage = 0;
 
-  // قائمة البيانات (تقدر تغير النصوص والأيقونات من هنا)
+  // البيانات
   List<Map<String, dynamic>> onboardingData = [
     {
       "title": "تعلّم بذكاء",
@@ -31,6 +32,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
   ];
 
+  // دالة الانتقال لصفحة الدخول (عشان ما نكرر الكود)
+  void _goToLogin() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                onPressed: () {
-                  // هنا ننتقل لصفحة تسجيل الدخول (لاحقاً)
-                  debugPrint("تم ضغط تخطي");
-                },
+                onPressed: _goToLogin, // تم الربط هنا
                 child: const Text(
                   "تخطي",
                   style: TextStyle(color: Colors.grey, fontSize: 16),
@@ -77,7 +83,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // مؤشر النقاط (Dots)
+                  // النقاط (Dots)
                   Row(
                     children: List.generate(
                       onboardingData.length,
@@ -85,22 +91,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   
-                  // الزر العائم (التالي أو ابدأ)
+                  // الزر العائم (التالي / ابدأ)
                   ElevatedButton(
                     onPressed: () {
                       if (_currentPage == onboardingData.length - 1) {
-                        // إذا وصلنا آخر صفحة -> تسجيل دخول
-                         debugPrint("يلا نبدأ!");
+                        _goToLogin(); // إذا آخر صفحة -> روح للدخول
                       } else {
-                        // غير كذا -> روح للصفحة التالية
-                        _controller.nextPage(
+                        _controller.nextPage( // وإلا -> الصفحة التالية
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn,
                         );
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6A11CB), // اللون البنفسجي حقنا
+                      backgroundColor: const Color(0xFF6A11CB),
                       shape: const CircleBorder(), 
                       padding: const EdgeInsets.all(15),
                     ),
@@ -120,13 +124,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // دالة صغيرة لرسم النقاط المتحركة
+  // دالة رسم النقاط
   AnimatedContainer buildDot({required int index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       margin: const EdgeInsets.only(right: 5),
       height: 6,
-      width: _currentPage == index ? 20 : 6, // النقطة الحالية تكون عريضة
+      width: _currentPage == index ? 20 : 6,
       decoration: BoxDecoration(
         color: _currentPage == index ? const Color(0xFF6A11CB) : const Color(0xFFD8D8D8),
         borderRadius: BorderRadius.circular(3),
@@ -135,7 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-// تصميم محتوى الصفحة الواحدة
+// تصميم المحتوى الداخلي
 class OnboardingContent extends StatelessWidget {
   final String title, body;
   final IconData icon;
