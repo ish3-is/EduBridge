@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async'; // عشان نستخدم التايمر
-
+import 'onboarding_screen.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -37,11 +37,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller.forward();
 
     // 2. المؤقت للانتقال للصفحة التالية
-    Timer(const Duration(seconds: 4), () {
-      // هنا بننتقل لصفحة الدخول لاحقاً (حالياً نخليه مكانه)
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-      debugPrint("انتهت شاشة البداية، المفروض نروح لصفحة الدخول");
-    });
+  Timer(const Duration(seconds: 4), () {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+  );
+});
   }
 
   @override
